@@ -1,0 +1,2 @@
+db_conn: "kb:kb@tcp(amd.local:3306)/kb?charset=utf8mb4&parseTime=True&loc=Local"
+startpath: "/home/kb/go/src/kbds"

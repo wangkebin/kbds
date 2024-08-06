@@ -30,7 +30,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		f := models.LFile{
+		f := models.FMeta{
 			Loc:  path,
 			Size: info.Size(),
 			Name: d.Name(),

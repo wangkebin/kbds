@@ -1,6 +1,6 @@
 package models
 
-type LFile struct {
+type FMeta struct {
 	Id   int64  `gorm:"primaryKey"`
 	Loc  string `gorm:"column:loc"`
 	Size int64  `gorm:"column:size"`
@@ -8,6 +8,8 @@ type LFile struct {
 	Ext  string `gorm:"column:ext"`
 }
 
-func (LFile) TableName() string {
+func (FMeta) TableName() string {
 	return "dirs"
 }
+
+type Results map[string]FMeta

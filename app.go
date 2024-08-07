@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/fs"
 	"kbds/models"
-	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -22,26 +20,8 @@ func main() {
 		return
 	}
 
-	filepath.WalkDir(cfg.StartPath, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		info, err := d.Info()
-		if err != nil {
-			return err
-		}
-		f := models.FMeta{
-			Loc:  path,
-			Size: info.Size(),
-			Name: d.Name(),
-			Ext:  "",
-		}
+	run(cfg.StartPath, db)
 
-		if !d.IsDir() {
-			db.Create(&f)
-		}
-		return nil
-	})
 
 }
 

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `dirs` (
+CREATE TABLE IF NOT EXISTS `file_info` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `loc` varchar(4096) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `size` bigint DEFAULT NULL,

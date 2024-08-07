@@ -9,7 +9,7 @@ type FMeta struct {
 }
 
 func (FMeta) TableName() string {
-	return "dirs"
+	return "file_info"
 }
 
 type Results map[string]FMeta

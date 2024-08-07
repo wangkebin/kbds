@@ -1,9 +1,11 @@
-package main
+package service
 
 import (
 	"io/fs"
-	"kbds/models"
 	"path/filepath"
+
+	"github.com/go-faster/errors"
+	"github.com/wangkebin/kbds-client/models"
 
 	//"runtime"
 	"sync"
@@ -11,21 +13,19 @@ import (
 	"gorm.io/gorm"
 )
 
-func collector(fmetas <-chan models.FMeta, db *gorm.DB) error {
+func collector(fmetas <-chan models.FMeta, batchsize int, db *gorm.DB) error {
 	filemetas := make([]models.FMeta, 0)
 	for f := range fmetas {
 		filemetas = append(filemetas, f)
-		if len(filemetas) > 999 {
-			res := db.CreateInBatches(&filemetas, 1000)
-			if res.Error != nil {
-				return res.Error
+		if len(filemetas) >= batchsize {
+			if err := CreateInBatches(db, &filemetas, batchsize); err != nil {
+				return errors.Wrap(err, "failed to create fmeta records in db")
 			}
 			filemetas = make([]models.FMeta, 0)
 		}
 	}
-	res := db.CreateInBatches(&filemetas, 1000)
-	if res.Error != nil {
-		return res.Error
+	if err := CreateInBatches(db, &filemetas, batchsize); err != nil {
+		return errors.Wrap(err, "failed to create fmeta records in db")
 	}
 	return nil
 }
@@ -52,17 +52,20 @@ func traversal(startPath string, fmetas chan<- models.FMeta) error {
 	return filepath.WalkDir(startPath, visit)
 }
 
-func run(startPath string, db *gorm.DB) models.Results {
+func Walk(cfg *models.Config, db *gorm.DB) models.Results {
 	//workers := 2 * runtime.GOMAXPROCS(0)
 	fmetas := make(chan models.FMeta)
 	//done := make(chan bool)
 	var wg sync.WaitGroup
-
-	go traversal(startPath, fmetas)
-	close(fmetas)
+	
 	wg.Add(1)
 	go func() {
-		collector(fmetas, db)
+		traversal(cfg.StartPath, fmetas)
+		close(fmetas)
+	}()
+
+	go func() {
+		collector(fmetas, cfg.BatchSize, db)
 		wg.Done()
 	}()
 	wg.Wait()

@@ -1,3 +1,5 @@
 CONNECTION_STRING: "kb:kb@tcp(amd.local:3306)/kb?charset=utf8mb4&parseTime=True&loc=Local"
-STARTPATH: "/home/kb/go/src/kbds"
-MACHINE: "macair"   
+START_PATH: "/Users/kebinwang/go/src"
+MACHINE: "macair"  
+BATCH_SIZE: 1000
+DEBUG: "true"

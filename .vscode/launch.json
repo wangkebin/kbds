@@ -9,13 +9,8 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/app",
+            "program": "${workspaceFolder}/app.go",
             "cwd": "${workspaceFolder}",
-            "env": {
-                "CONNECTION_STRING": "kb:kb@tcp(amd.local:3306)/kb?charset=utf8mb4&parseTime=True&loc=Local",
-                "START_PATH":"/home/kb/go/src/kbds",
-                "MACHINE":"macair",
-            }
         }
     ]
 }

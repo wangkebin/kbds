@@ -1,4 +1,4 @@
-package main
+package service
 
 import (
 	"sync"
@@ -13,7 +13,7 @@ var (
 	db   *gorm.DB
 )
 
-func Connect(connstr string) (*gorm.DB, error) {
+func Connect(connstr string, debug bool) (*gorm.DB, error) {
 	var dbErr error
 	//var db *gorm.DB
 
@@ -39,6 +39,9 @@ func Connect(connstr string) (*gorm.DB, error) {
 
 	if dbErr != nil {
 		return nil, dbErr
+	}
+	if debug {
+		db = db.Debug()
 	}
 	return db, nil
 }

@@ -1,8 +1,9 @@
-module kbds
+module github.com/wangkebin/kbds-client
 
 go 1.22.0
 
 require (
+	github.com/go-faster/errors v0.7.1
 	github.com/spf13/viper v1.16.0
 	gorm.io/driver/mysql v1.5.1
 	gorm.io/gorm v1.25.4

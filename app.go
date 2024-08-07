@@ -2,39 +2,25 @@ package main
 
 import (
 	"fmt"
-	"kbds/models"
+	"time"
 
-	"github.com/spf13/viper"
+	"github.com/wangkebin/kbds-client/service"
 )
 
 func main() {
 
-	cfg, err := LoadConfig(".")
+	cfg, err := service.LoadConfig(".")
 	if err != nil {
 		fmt.Printf("%v", err)
 	}
 
-	db, err := Connect(cfg.DbConnStr)
+	db, err := service.Connect(cfg.DbConnStr, cfg.Debug)
 	if err != nil {
 		fmt.Printf("%v", err)
 		return
 	}
+	start := time.Now()
+	service.Walk(&cfg, db)
+	fmt.Println("time taken (ms): ", time.Since(start).Milliseconds())
 
-	run(cfg.StartPath, db)
-
-
-}
-
-func LoadConfig(path string) (config models.Config, err error) {
-	viper.AddConfigPath(path)
-	viper.SetConfigName("config")
-	err = viper.ReadInConfig()
-	if err != nil {
-		fmt.Printf("%v", err)
-	}
-	err = viper.Unmarshal(&config)
-	if err != nil {
-		fmt.Printf("%v", err)
-	}
-	return
 }

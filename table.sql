@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS `file_info` (
   `size` bigint DEFAULT NULL,
   `name` varchar(1024) DEFAULT NULL,
   `ext` varchar(1024) DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE(loc)
 )

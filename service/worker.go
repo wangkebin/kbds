@@ -33,11 +33,11 @@ func collector(fmetas <-chan models.FMeta, batchsize int, db *gorm.DB) error {
 func traversal(startPath string, fmetas chan<- models.FMeta) error {
 	visit := func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return err
+			return nil
 		}
 		info, err := d.Info()
 		if err != nil {
-			return err
+			return nil
 		}
 		f := models.FMeta{
 			Loc:  path,

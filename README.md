@@ -11,6 +11,8 @@ The following query finds all duplications by name only
 ```
 SELECT COUNT(*), d.name, d.loc FROM dirs d GROUP BY d.name having COUNT(*) > 2 ORDER BY size DESC;
 ```
+## Performance
+It walked a folder with 173k files and wrote those records into a MySQL DB on a local area network in less than 12 seconds. 
 
 ## Future Features
 ### Auto update

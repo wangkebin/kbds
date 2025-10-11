@@ -1,0 +1,12 @@
+CREATE TABLE `machine` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	`ip` VARCHAR(32) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	`writable` TINYINT(1) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `id_UNIQUE` (`id`)
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=5
+;

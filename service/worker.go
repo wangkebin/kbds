@@ -30,20 +30,21 @@ func collector(fmetas <-chan models.FMeta, batchsize int, db *gorm.DB) error {
 	return nil
 }
 
-func traversal(startPath string, fmetas chan<- models.FMeta) error {
+func traversal(startPath string, machine_id string, fmetas chan<- models.FMeta) error {
 	visit := func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return nil
+			return err
 		}
 		info, err := d.Info()
 		if err != nil {
-			return nil
+			return err
 		}
 		f := models.FMeta{
-			Loc:  path,
-			Size: info.Size(),
-			Name: d.Name(),
-			Ext:  "",
+			Loc:       path,
+			Size:      info.Size(),
+			Name:      d.Name(),
+			Ext:       filepath.Ext(d.Name()),
+			MachineId: machine_id,
 		}
 		fmetas <- f
 
@@ -57,10 +58,10 @@ func Walk(cfg *models.Config, db *gorm.DB) models.Results {
 	fmetas := make(chan models.FMeta)
 	//done := make(chan bool)
 	var wg sync.WaitGroup
-	
+
 	wg.Add(1)
 	go func() {
-		traversal(cfg.StartPath, fmetas)
+		traversal(cfg.StartPath, cfg.MachineStr, fmetas)
 		close(fmetas)
 	}()
 
